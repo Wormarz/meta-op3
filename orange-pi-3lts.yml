@@ -1,0 +1,55 @@
+header:
+  version: 14
+
+machine: orange-pi-3lts
+dist: poky
+target: core-image-minimal
+
+repo:
+  poky:
+    url: https://github.com/yoctoproject/poky.git
+    commit: d0b46a6624ec9c61c47270745dd0b2d5abbe6ac1
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  
+  meta-openembedded:
+    url: https://github.com/openembedded/meta-openembedded.git
+    commit: 07330a98cf93806b7a4e0170a541b94962ff3960
+    layers:
+      meta-oe:
+      meta-python:
+
+  meta-arm:
+    url: https://github.com/jonmason/meta-arm.git
+    commit: b68089f2648d712b9406d0e88c71758913267f81
+    layers:
+      meta-arm:
+      meta-arm-toolchain:
+
+  meta-sunxi:
+    url: https://github.com/linux-sunxi/meta-sunxi.git
+    commit: 3bf96b053a4348b3c7d90495f9c69d6ced6f8055
+    layers:
+      .:
+
+  meta-op3:
+    path: meta-op3
+    layers:
+      .:
+
+local_conf_header:
+  meta-op3: |
+    PACKAGE_CLASSES ?= "package_rpm"
+    EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
+    USER_CLASSES ?= "buildstats"
+    PATCHRESOLVE = "noop"
+    BB_DISKMON_DIRS ??= " \
+        STOPTASKS,${TMPDIR},1G,100K \
+        STOPTASKS,${DL_DIR},1G,100K \
+        STOPTASKS,${SSTATE_DIR},1G,100K \
+        HALT,${TMPDIR},100M,1K \
+        HALT,${DL_DIR},100M,1K \
+        HALT,${SSTATE_DIR},100M,1K \
+        HALT,/tmp,100M,1K"
