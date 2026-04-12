@@ -3,4 +3,7 @@
 # when the kernel metadata search resolves patch and scc references.
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-mainline:"
-SRC_URI:prepend = "file://op3-kmeta;type=kmeta;name=op3-kmeta;destsuffix=op3-kmeta "
+SRC_URI:append = "file://sunxi-kmeta-op3;type=kmeta;name=sunxi-kmeta-op3"
+
+KERNEL_FEATURES:remove:orange-pi-3lts = "bsp/orange-pi-3lts/orange-pi-3lts-6_5.scc"
+KERNEL_FEATURES:prepend:orange-pi-3lts = "bsp/orange-pi-3lts/orange-pi-3lts-6_5_fixed.scc "

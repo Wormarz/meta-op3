@@ -1,0 +1,39 @@
+From 9962c9723fd7bb0d9b911c16cdbb9f8c35c16b71 Mon Sep 17 00:00:00 2001
+From: wormarz <wormarz@outlook.com>
+Date: Sun, 12 Apr 2026 11:41:22 +0800
+Subject: [PATCH] clk: fix clk.conf.c for new of_property_for_each_u32 API
+
+Signed-off-by: wormarz <wormarz@outlook.com>
+---
+ drivers/clk/clk-conf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
+index 70b0fdd63..b6a6f3a87 100644
+--- a/drivers/clk/clk-conf.c
++++ b/drivers/clk/clk-conf.c
+@@ -17,8 +17,8 @@ static int __set_clk_flags(struct device_node *node)
+ {
+ 	struct of_phandle_args clkspec;
+ 	struct property *prop;
+-	int i, index = 0, rc;
+ 	const __be32 *cur;
++	int i, index = 0, rc;
+ 	struct clk *clk;
+ 	u32 nr_cells;
+ 
+@@ -31,7 +31,10 @@ static int __set_clk_flags(struct device_node *node)
+ 	clkspec.np         = node;
+ 	clkspec.args_count = nr_cells;
+ 
+-	of_property_for_each_u32(node, "protected-clocks", prop, cur, clkspec.args[0]) {
++	prop = of_find_property(node, "protected-clocks", NULL);
++	for (cur = of_prop_next_u32(prop, NULL, &clkspec.args[0]);
++			cur;
++			cur = of_prop_next_u32(prop, cur, &clkspec.args[0])) {
+ 		/* read the remainder of the clock specifier */
+ 		for (i = 1; i < nr_cells; ++i) {
+ 			cur = of_prop_next_u32(prop, cur, &clkspec.args[i]);
+-- 
+2.43.0
+
