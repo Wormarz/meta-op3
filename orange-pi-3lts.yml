@@ -54,4 +54,10 @@ local_conf_header:
         HALT,${DL_DIR},100M,1K \
         HALT,${SSTATE_DIR},100M,1K \
         HALT,/tmp,100M,1K"
-    IMAGE_INSTALL:append = " kernel-modules uwe5622-firmware linux-firmware-rtl8723 linux-firmware-bcm43430"
+    IMAGE_INSTALL:append = " \
+                            kernel-modules \
+                            uwe5622-firmware \
+                            linux-firmware-rtl8723 \
+                            linux-firmware-bcm43430 \
+                            wpa-supplicant \
+                            dhcpcd"
