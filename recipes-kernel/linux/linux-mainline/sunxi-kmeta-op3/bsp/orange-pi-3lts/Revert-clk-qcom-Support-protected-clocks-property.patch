@@ -10,7 +10,7 @@ This reverts commit b181b3b801da8893c8eb706e448dd5111b02de60.
 
 Signed-off-by: Samuel Holland <samuel@sholland.org>
 ---
- drivers/clk/qcom/common.c | 16 ------------------
+ drivers/clk/qcom/common.c | 16 ----------------
  1 file changed, 16 deletions(-)
 
 --- a/drivers/clk/qcom/common.c
