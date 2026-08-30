@@ -56,8 +56,23 @@ local_conf_header:
         HALT,${DL_DIR},100M,1K \
         HALT,${SSTATE_DIR},100M,1K \
         HALT,/tmp,10M,1K"
+    # wifi: wpa_supplicant (standalone, cf. recipes-connectivity bbappend) + iw
+    #       + wireless-regdb-static (kernel regulatory.db) + dhcpcd (auto IP)
+    # bluetooth: bluez5/bluez5-obex, needs the "bluetooth" distro feature
+    DISTRO_FEATURES:append = " bluetooth"
     IMAGE_INSTALL:append = " \
                             kernel-modules \
                             uwe5622-firmware \
                             linux-firmware-rtl8723 \
-                            linux-firmware-bcm43430"
+                            linux-firmware-bcm43430 \
+                            wpa-supplicant \
+                            iw \
+                            wireless-regdb-static \
+                            dhcpcd \
+                            bluez5 \
+                            bluez5-obex"
+    # Fix: U-boot on Allwinner sets fdtfile="allwinner/<dtb>", so the DTB must
+    # be in the allwinner/ subdirectory of the boot partition, not the root.
+    # sunxi64.inc IMAGE_BOOT_FILES strips the directory prefix with .split('/')[-1],
+    # so we override it here with the source;destination syntax.
+    IMAGE_BOOT_FILES = "${KERNEL_IMAGETYPE} boot.scr sun50i-h6-orangepi-3-lts.dtb;allwinner/sun50i-h6-orangepi-3-lts.dtb"
