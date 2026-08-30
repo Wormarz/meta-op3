@@ -1,0 +1,12 @@
+header:
+  version: 14
+
+distro: homeassistant
+target: core-image-homeassistant
+
+local_conf_header:
+  homeassistant: |
+    IMAGE_INSTALL:append = " python3-homeassistant"
+  homeassistant-bluetooth: |
+    # Bluetooth system stack
+    IMAGE_INSTALL:append = " bluez5 bluez5-obex"
